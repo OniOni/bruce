@@ -29,9 +29,11 @@ impl Brucefile {
     }
 
     fn run(&self, cmd_name: &str) -> String {
-        let cmd = &self.commands[cmd_name].trim();
+        let cmd: Vec<&str> = self.commands[cmd_name].trim().split(' ').collect();
 
-        match Command::new(cmd).output() {
+        println!("{:?}", cmd);
+
+        match Command::new(cmd[0]).args(cmd[1..].iter()).output() {
             Ok(output) => String::from_utf8_lossy(&output.stdout).into_owned(),
             Err(e) => {
                 println!("{}", e);
