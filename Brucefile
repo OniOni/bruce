@@ -1,3 +1,5 @@
 lint: ls -al
 
 test: pwd
+
++qa: lint test

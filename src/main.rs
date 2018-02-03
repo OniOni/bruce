@@ -7,7 +7,6 @@ use std::process::Command;
 
 
 struct Brucefile {
-    content: String,
     commands: HashMap<String, String>,
 }
 
@@ -25,13 +24,11 @@ impl Brucefile {
             }
         });
 
-        Brucefile { content: content, commands: cmds }
+        Brucefile { commands: cmds }
     }
 
-    fn run(&self, cmd_name: &str) -> String {
+    fn exec(&self, cmd_name: &str) -> String {
         let cmd: Vec<&str> = self.commands[cmd_name].trim().split(' ').collect();
-
-        println!("{:?}", cmd);
 
         match Command::new(cmd[0]).args(cmd[1..].iter()).output() {
             Ok(output) => String::from_utf8_lossy(&output.stdout).into_owned(),
@@ -39,6 +36,20 @@ impl Brucefile {
                 println!("{}", e);
                 String::from("Err")
             }
+        }
+    }
+
+    fn run(&self, cmd_name: &str) {
+
+        if String::from(cmd_name).chars().nth(0) == Some('+') {
+            let cmds: Vec<&str> = self.commands[cmd_name].trim().split(' ').collect();
+            for cmd in cmds {
+                let output = self.exec(cmd);
+                println!("{}", output);
+            }
+        } else {
+            let output = self.exec(cmd_name);
+            println!("{}", output);
         }
     }
 
@@ -50,7 +61,9 @@ fn load(filename: &str) -> String {
     let mut buffer = String::new();
 
     match f.ok() {
-        Some(mut v) => {v.read_to_string(&mut buffer);},
+        Some(mut v) => {
+            let _ = v.read_to_string(&mut buffer);
+        },
         None => {},
     }
 
@@ -66,8 +79,5 @@ fn get_cmd() -> String {
 
 fn main() {
     let brucefile = Brucefile::from_file("Brucefile");
-
-    let output = brucefile.run(get_cmd().as_str());
-
-    println!("{}", output);
+    brucefile.run(get_cmd().as_str());
 }
