@@ -4,3 +4,4 @@ mypy
 ipython
 isort>=4.3.21
 wheel
+twine

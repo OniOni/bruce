@@ -3,7 +3,7 @@
 from setuptools import find_packages, setup  # type: ignore
 
 setup(
-    name="bruce",
+    name="bruce-bld",
     version="0.0.1",
     description="Small Command Executor",
     author="Mathieu Sabourin",
