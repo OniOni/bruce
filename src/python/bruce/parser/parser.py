@@ -1,8 +1,8 @@
 import configparser
 from typing import Any, Dict, List, Union
 
-from task import BaseTask, ShellTask
-from watchable import BaseWatchable, Glob, Timestamp
+from ..task import BaseTask, ShellTask
+from ..watchable import BaseWatchable, Glob, Timestamp
 
 
 def parse(filename: str) -> List[BaseTask]:

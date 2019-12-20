@@ -6,8 +6,8 @@ from hashlib import md5
 from operator import xor
 from typing import List, cast
 
-from cache import BaseCacheManager, Cacheable
-from watchable import BaseWatchable
+from ..cache import BaseCacheManager, Cacheable
+from ..watchable import BaseWatchable
 
 
 @dataclass

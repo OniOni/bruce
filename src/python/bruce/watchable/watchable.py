@@ -5,7 +5,7 @@ from os import stat
 from pathlib import Path
 from typing import List
 
-from cache import Cacheable
+from ..cache import Cacheable
 
 
 class BaseWatchable(Cacheable):

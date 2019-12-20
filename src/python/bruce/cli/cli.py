@@ -1,8 +1,8 @@
 import argparse
-from parser import parse
 
-from cache import SimpleCacheManager
-from toposort import toposort
+from ..cache import SimpleCacheManager
+from ..parser import parse
+from ..toposort import toposort
 
 
 def setup() -> argparse.Namespace:

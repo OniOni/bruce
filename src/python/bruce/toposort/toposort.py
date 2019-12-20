@@ -2,7 +2,7 @@ import copy
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Set, overload
 
-from task import BaseTask
+from ..task import BaseTask
 
 
 @dataclass
