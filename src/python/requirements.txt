@@ -1,0 +1,6 @@
+setuptools>=42.0.0
+black
+mypy
+ipython
+isort>=4.3.21
+wheel

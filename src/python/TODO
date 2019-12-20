@@ -1,0 +1,9 @@
+Todo:
+- Package up
+- Write bootstrapping script
+- Groups (aka metatasks)
+- File groups
+
+Done:
+- Task should become invalidated if config changes
+- We should allow running specific tasks from CLI
