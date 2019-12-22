@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import pathlib
 import subprocess
+from os import environ
 
 
 def mk_venv(path: str = ".bruce/venv") -> str:
@@ -36,7 +37,13 @@ def bootstrap() -> None:
 def run() -> None:
     import sys
 
-    sys.path.insert(0, ".bruce/venv/lib/python3.7/site-packages/")
+    path = (
+        ".bruce/venv/lib/python3.7/site-packages/"
+        if environ.get("DEV", 0) == 0
+        else "src/python"
+    )
+
+    sys.path.insert(0, path)
 
     from bruce.cli import main
 
