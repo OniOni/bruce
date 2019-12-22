@@ -29,6 +29,12 @@ def install(wheel: str) -> None:
 
 
 def bootstrap() -> None:
+    bruce_dir = pathlib.Path(".bruce")
+
+    if not bruce_dir.exists():
+        bruce_dir.mkdir()
+        bruce_dir.joinpath("store.json").write_text("{}")
+
     mk_venv()
     whl_path = fetch()
     install(whl_path)
