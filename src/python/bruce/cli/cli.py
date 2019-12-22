@@ -2,6 +2,7 @@ import argparse
 
 from ..cache import SimpleCacheManager
 from ..parser import parse
+from ..task import FailedTaskException
 from ..toposort import toposort
 
 
@@ -19,7 +20,12 @@ def main() -> None:
 
     for n in toposort(tasks, args.tasks):
         print(f"Executing {n.task.name}:")
-        ran = n.task.run(cache)
+        try:
+            ran = n.task.run(cache)
+        except FailedTaskException as e:
+            print(e)
+            exit(1)
+
         if not ran:
             print("Unmodified.")
 

@@ -10,6 +10,10 @@ from ..cache import BaseCacheManager, Cacheable
 from ..watchable import BaseWatchable
 
 
+class FailedTaskException(Exception):
+    pass
+
+
 @dataclass
 class BaseTask(Cacheable):
     name: str
@@ -38,6 +42,8 @@ class BaseTask(Cacheable):
         if cache.changed(self):
             if self.exec():
                 cache.cache(self)
+            else:
+                raise FailedTaskException(f'Task "{self.key}" failed.')
 
             return True
 
