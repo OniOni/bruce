@@ -7,11 +7,8 @@ from operator import xor
 from typing import List, cast
 
 from ..cache import BaseCacheManager, Cacheable
+from ..exceptions import FailedTaskException
 from ..watchable import BaseWatchable
-
-
-class FailedTaskException(Exception):
-    pass
 
 
 @dataclass
