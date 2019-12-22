@@ -13,7 +13,7 @@ def mk_venv(path: str = ".bruce/venv") -> str:
     return path
 
 
-def fetch(version: str = "0.0.1") -> str:
+def fetch(version: str = "0.0.2") -> str:
     path = f".bruce/bruce_bld-{version}-py3-none-any.whl"
 
     if not pathlib.Path(path).exists():
