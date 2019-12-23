@@ -35,7 +35,10 @@ def parse(filename: str) -> List[BaseTask]:
             if info["type"] == "file":
                 inst = Timestamp(**info["keys"])
             elif info["type"] == "glob":
-                inst = Glob(info["keys"]["glob"])
+                inst = Glob(
+                    glob=info["keys"]["glob"],
+                    exclude=info["keys"]["exclude"].split(","),
+                )
             elif info["type"] == "task":
                 watch_info = info["keys"].pop("watch", None)
                 watch = [s.strip() for s in watch_info.split(",")] if watch_info else []

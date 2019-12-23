@@ -1,4 +1,5 @@
-from dataclasses import dataclass
+import re
+from dataclasses import dataclass, field
 from functools import reduce
 from operator import xor
 from os import stat
@@ -30,8 +31,15 @@ class Timestamp(File):
 @dataclass
 class Glob(BaseWatchable):
     glob: str
+    exclude: List[str] = field(default_factory=list)
 
     def fingerprint(self) -> str:
+        exclude = re.compile("|".join(self.exclude))
+
         return self._hash(
-            [Timestamp(str(p)).fingerprint() for p in Path(".").glob(self.glob)]
+            [
+                Timestamp(str(p)).fingerprint()
+                for p in Path(".").glob(self.glob)
+                if not exclude.match(str(p))
+            ]
         )
