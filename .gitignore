@@ -7,3 +7,9 @@ Cargo.lock
 
 # Emacs
 *\~
+
+**/*__pycache__/
+.mypy_cache
+.bruce
+build/
+venv/
