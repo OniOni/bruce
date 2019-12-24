@@ -40,6 +40,6 @@ class Glob(BaseWatchable):
             [
                 Timestamp(str(p)).fingerprint()
                 for p in Path(".").glob(self.glob)
-                if not exclude.match(str(p))
+                if not self.exclude or not exclude.match(str(p))
             ]
         )
