@@ -4,7 +4,7 @@ from setuptools import find_packages, setup  # type: ignore
 
 setup(
     name="bruce-bld",
-    version="0.0.3",
+    version="0.0.4",
     description="Small Command Executor",
     author="Mathieu Sabourin",
     author_email="mathieu.c.sabourin@gmail.com",
