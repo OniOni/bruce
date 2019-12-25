@@ -3,41 +3,57 @@ import pathlib
 import subprocess
 from os import environ
 
-
-def mk_venv(path: str = ".bruce/venv") -> str:
-    import venv  # type: ignore
-
-    if not pathlib.Path(path).exists():
-        venv.create(path, with_pip=True)
-
-    return path
+DEFAULT_VERSION = "0.0.5"
+DEFAULT_LOCATION = ".bruce"
 
 
-def fetch(version: str = "0.0.2") -> str:
-    path = f".bruce/bruce_bld-{version}-py3-none-any.whl"
-
-    if not pathlib.Path(path).exists():
-        subprocess.run(
-            [".bruce/venv/bin/pip", "download", f"bruce-bld=={version}", "-d", ".bruce"]
-        )
-    return path
-
-
-def install(wheel: str) -> None:
-    if not pathlib.Path(".bruce/venv/lib/python3.7/site-packages/bruce").exists():
-        subprocess.run([".bruce/venv/bin/pip", "install", "--no-cache-dir", wheel])
-
-
-def bootstrap() -> None:
-    bruce_dir = pathlib.Path(".bruce")
+def mk_store(path: str) -> None:
+    bruce_dir = pathlib.Path(path)
 
     if not bruce_dir.exists():
         bruce_dir.mkdir()
         bruce_dir.joinpath("store.json").write_text("{}")
 
-    mk_venv()
-    whl_path = fetch()
-    install(whl_path)
+
+def mk_venv(path: str) -> str:
+    import venv  # type: ignore
+
+    venv_path = f"{path}/venv"
+    if not pathlib.Path(venv_path).exists():
+        venv.create(venv_path, with_pip=True)
+
+    return venv_path
+
+
+def fetch(version: str, location: str) -> str:
+    path = f"{location}/bruce_bld-{version}-py3-none-any.whl"
+
+    if not pathlib.Path(path).exists():
+        subprocess.run(
+            [
+                f"{location}/venv/bin/pip",
+                "download",
+                f"bruce-bld=={version}",
+                "-d",
+                ".bruce",
+            ]
+        )
+    return path
+
+
+def install(wheel: str, location: str) -> None:
+    if not pathlib.Path(f"{location}/venv/lib/python3.7/site-packages/bruce").exists():
+        subprocess.run([f"{location}/venv/bin/pip", "install", "--no-cache-dir", wheel])
+
+
+def bootstrap() -> None:
+    location = environ.get("BRC_DIR", DEFAULT_LOCATION)
+    version = environ.get("BRC_VER", DEFAULT_VERSION)
+
+    mk_store(location)
+    mk_venv(location)
+    whl_path = fetch(version, location)
+    install(whl_path, location)
 
 
 def run() -> None:
@@ -45,7 +61,7 @@ def run() -> None:
 
     path = (
         ".bruce/venv/lib/python3.7/site-packages/"
-        if environ.get("DEV", 0) == 0
+        if environ.get("BRC_DEV", 0) == 0
         else "src/python"
     )
 
