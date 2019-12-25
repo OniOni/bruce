@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from functools import reduce
 from hashlib import md5
 from operator import xor
-from typing import List, cast
+from typing import List, Optional, cast
 
 from ..cache import BaseCacheManager, Cacheable
 from ..exceptions import FailedTaskException
@@ -13,8 +13,8 @@ from ..watchable import BaseWatchable
 
 @dataclass
 class BaseTask(Cacheable):
-    name: str
     cmd: str
+    name: str
     upstream: List["BaseTask"] = field(default_factory=list)
     watch: List[BaseWatchable] = field(default_factory=list)
 
@@ -60,3 +60,8 @@ class ShellTask(BaseTask):
         print(res.stdout.decode().strip())
 
         return res.returncode == 0
+
+
+class MetaTask(BaseTask):
+    def exec(self) -> bool:
+        return True

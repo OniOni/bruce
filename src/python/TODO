@@ -1,7 +1,6 @@
 Todo:
 - Groups (aka metatasks)
 - File groups
-- better error handling
 - Allow per task fingerprinting strategy
 - Allow users to hook up custom fingerprinting strategies
 
@@ -10,3 +9,4 @@ Done:
 - We should allow running specific tasks from CLI
 - Package up
 - Write bootstrapping script
+- better error handling

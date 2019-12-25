@@ -1,7 +1,7 @@
 import configparser
 from typing import Any, Dict, List, Union
 
-from ..task import BaseTask, ShellTask
+from ..task import BaseTask, MetaTask, ShellTask
 from ..watchable import BaseWatchable, Glob, Timestamp
 
 
@@ -41,17 +41,30 @@ def parse(filename: str) -> List[BaseTask]:
                     if "exclude" in info["keys"]
                     else [],
                 )
-            elif info["type"] == "task":
+            elif info["type"] in ("task", "group"):
                 watch_info = info["keys"].pop("watch", None)
-                watch = [s.strip() for s in watch_info.split(",")] if watch_info else []
-                inst = ShellTask(
-                    name,
-                    upstream=[done[up] for up in upstream],
-                    watch=[done[w] for w in watch],  # type: ignore
-                    **info["keys"]
+                watch = (
+                    [done[s.strip()] for s in watch_info.split(",")]
+                    if watch_info
+                    else []
                 )
+                upstream_ = [done[up] for up in upstream]
+                if "cmd" in info["keys"]:
+                    inst = ShellTask(
+                        name=name,
+                        cmd=info["keys"]["cmd"],
+                        upstream=upstream_,
+                        watch=watch,  # type: ignore
+                    )
+                else:
+                    inst = MetaTask(
+                        name=name,
+                        cmd="",
+                        upstream=upstream_,
+                        watch=watch,  # type: ignore
+                    )
             else:
-                raise Exception("Unhandled type")
+                raise Exception(f"Unhandled type: {info['type']}")
 
             done[name] = inst  #  type: ignore
         else:
