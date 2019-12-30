@@ -3,7 +3,7 @@ import pathlib
 import subprocess
 from os import environ
 
-DEFAULT_VERSION = "0.0.5"
+DEFAULT_VERSION = "0.0.6"
 DEFAULT_LOCATION = ".bruce"
 
 
