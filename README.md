@@ -27,10 +27,28 @@ watch = venv
 cmd = venv/bin/pip install -r requirements.txt
 watch = reqs
 upstream = init
+
+[task:black]
+cmd = venv/bin/black src/python --exclude venv bruce.py
+watch = py
+upstream = deps
+
+[task:isort]
+cmd = venv/bin/isort --skip venv -rc -y src/python bruce.py
+watch = py
+upstream = deps
+
+[task:mypy]
+cmd = venv/bin/mypy --strict src/python/bruce/*/*.py bruce.py
+watch = py
+upstream = black, isort
+
+[group:qa]
+upstream = mypy,black,isort
 ```
 
 ### Execute commands
 ```shell
-$ ./bruce.py <command>
+$ ./bruce.py qa
 ...
 ```
