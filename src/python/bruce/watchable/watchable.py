@@ -1,15 +1,15 @@
 import re
 from dataclasses import dataclass, field
-from functools import reduce
-from operator import xor
-from os import stat
 from pathlib import Path
-from typing import List
+from typing import List, Type
 
-from ..cache import Cacheable
+from ..cache import Cacheable, FingerprintingStrategy
 
 
+@dataclass
 class BaseWatchable(Cacheable):
+    fingerprinting_strategy: Type[FingerprintingStrategy]
+
     def fingerprint(self) -> str:
         raise NotImplementedError
 
@@ -18,14 +18,8 @@ class BaseWatchable(Cacheable):
 class File(BaseWatchable):
     path: str
 
-
-class Timestamp(File):
     def fingerprint(self) -> str:
-        try:
-            stat_info = stat(self.path)
-            return self._hash([str(stat_info.st_mtime)])
-        except FileNotFoundError:
-            return self._hash([""])
+        return self.fingerprinting_strategy.fingerprint(self.path)
 
 
 @dataclass
@@ -38,7 +32,7 @@ class Glob(BaseWatchable):
 
         return self._hash(
             [
-                Timestamp(str(p)).fingerprint()
+                self.fingerprinting_strategy.fingerprint(str(p))
                 for p in Path(".").glob(self.glob)
                 if not self.exclude or not exclude.match(str(p))
             ]

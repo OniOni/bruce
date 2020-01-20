@@ -1,3 +1,3 @@
-from .watchable import BaseWatchable, File, Glob, Timestamp
+from .watchable import BaseWatchable, File, Glob
 
-__all__ = ["BaseWatchable", "File", "Timestamp", "Glob"]
+__all__ = ["BaseWatchable", "File", "Glob"]

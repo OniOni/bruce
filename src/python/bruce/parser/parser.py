@@ -1,8 +1,9 @@
 import configparser
 from typing import Any, Dict, List, Union
 
+from ..cache import TimestampStrategy
 from ..task import BaseTask, MetaTask, ShellTask
-from ..watchable import BaseWatchable, Glob, Timestamp
+from ..watchable import BaseWatchable, File, Glob
 
 
 def parse(filename: str) -> List[BaseTask]:
@@ -33,10 +34,12 @@ def parse(filename: str) -> List[BaseTask]:
         upstream: List[str] = info["upstream"]
         if not upstream or len(upstream) == len(set(done) & set(upstream)):
             if info["type"] == "file":
-                inst = Timestamp(**info["keys"])
+                info["keys"]["fingerprinting_strategy"] = TimestampStrategy
+                inst = File(**info["keys"])
             elif info["type"] == "glob":
                 inst = Glob(
                     glob=info["keys"]["glob"],
+                    fingerprinting_strategy=TimestampStrategy,
                     exclude=info["keys"]["exclude"].split(",")
                     if "exclude" in info["keys"]
                     else [],

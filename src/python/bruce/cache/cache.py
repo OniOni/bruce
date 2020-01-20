@@ -1,7 +1,8 @@
 import json
 from dataclasses import dataclass
-from hashlib import sha1
 from typing import Any, List
+
+from .fingerprinting import hash_
 
 
 class Cacheable:
@@ -11,11 +12,7 @@ class Cacheable:
         raise NotImplementedError
 
     def _hash(self, elements: List[str]) -> str:
-        m = sha1()
-        for el in elements:
-            m.update(el.encode())
-
-        return m.hexdigest()
+        return hash_(elements)
 
 
 @dataclass
