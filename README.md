@@ -47,8 +47,9 @@ upstream = black, isort
 upstream = mypy,black,isort
 ```
 
+### Install
+[![asciicast](https://asciinema.org/a/BGg2bU9B2KdKUAZI1wCe4BhpT.svg)](https://asciinema.org/a/BGg2bU9B2KdKUAZI1wCe4BhpT)
+
 ### Execute commands
-```shell
-$ ./bruce.py qa
-...
+[![asciicast](https://asciinema.org/a/dLCJoyEejwWepD4emaffR28GJ.svg)](https://asciinema.org/a/dLCJoyEejwWepD4emaffR28GJ)
 ```
