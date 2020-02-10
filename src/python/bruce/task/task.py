@@ -21,8 +21,7 @@ class BaseTask(Cacheable):
     def fingerprint(self) -> str:
         els = [
             el.fingerprint()
-            for el in cast(List[Cacheable], self.upstream)
-            + cast(List[Cacheable], self.watch)
+            for el in cast(List[Cacheable], self.watch)
         ]
         els.append(self.cmd)
 
