@@ -25,3 +25,10 @@ class TimestampStrategy(FingerprintingStrategy):
             return hash_([str(stat_info.st_mtime)])
         except FileNotFoundError:
             return hash_([""])
+
+
+class ContentStrategy(FingerprintingStrategy):
+    @classmethod
+    def fingerprint(cls, path: str) -> str:
+        with open(path) as f:
+            return hash_(f.readlines())
