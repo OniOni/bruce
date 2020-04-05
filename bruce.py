@@ -60,11 +60,12 @@ def run() -> None:
     import sys
 
     path = (
-        ".bruce/venv/lib/python3.7/site-packages/"
+        ".bruce/venv/lib/python3.8/site-packages/"
         if environ.get("BRC_DEV", 0) == 0
         else "src/python"
     )
 
+    sys.path.insert(0, ".bruce/venv/lib/python3.8/site-packages/")
     sys.path.insert(0, path)
 
     from bruce.cli import main

@@ -2,7 +2,7 @@ import argparse
 
 from ..cache import SimpleCacheManager
 from ..exceptions import BruceError, FailedTaskException
-from ..parser import parse
+from ..parser.toml_ import parse
 from ..toposort import toposort
 
 
