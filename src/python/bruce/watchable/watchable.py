@@ -1,7 +1,7 @@
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Type
+from typing import Sequence, Type
 
 from ..cache import Cacheable, FingerprintingStrategy
 
@@ -25,7 +25,7 @@ class File(BaseWatchable):
 @dataclass
 class Glob(BaseWatchable):
     glob: str
-    exclude: List[str] = field(default_factory=list)
+    exclude: Sequence[str] = field(default_factory=list)
 
     def fingerprint(self) -> str:
         exclude = re.compile("|".join(self.exclude))
