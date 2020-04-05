@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 import pathlib
 import subprocess
+import sys
 from os import environ
 
 DEFAULT_VERSION = "0.0.6"
 DEFAULT_LOCATION = ".bruce"
+PYTHON_VERSION = f"python{sys.version_info.major}.{sys.version_info.minor}"
 
 
 def mk_store(path: str) -> None:
@@ -34,6 +36,7 @@ def fetch(version: str, location: str) -> str:
                 f"{location}/venv/bin/pip",
                 "download",
                 f"bruce-bld=={version}",
+                "--isolated",
                 "-d",
                 ".bruce",
             ]
@@ -42,7 +45,9 @@ def fetch(version: str, location: str) -> str:
 
 
 def install(wheel: str, location: str) -> None:
-    if not pathlib.Path(f"{location}/venv/lib/python3.7/site-packages/bruce").exists():
+    if not pathlib.Path(
+        f"{location}/venv/lib/{PYTHON_VERSION}/site-packages/bruce"
+    ).exists():
         subprocess.run([f"{location}/venv/bin/pip", "install", "--no-cache-dir", wheel])
 
 
@@ -60,12 +65,12 @@ def run() -> None:
     import sys
 
     path = (
-        ".bruce/venv/lib/python3.8/site-packages/"
+        f".bruce/venv/lib/{PYTHON_VERSION}/site-packages/"
         if environ.get("BRC_DEV", 0) == 0
         else "src/python"
     )
 
-    sys.path.insert(0, ".bruce/venv/lib/python3.8/site-packages/")
+    sys.path.insert(0, f".bruce/venv/lib/{PYTHON_VERSION}/site-packages/")
     sys.path.insert(0, path)
 
     from bruce.cli import main
