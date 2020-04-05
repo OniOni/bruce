@@ -19,10 +19,7 @@ class BaseTask(Cacheable):
     watch: List[BaseWatchable] = field(default_factory=list)
 
     def fingerprint(self) -> str:
-        els = [
-            el.fingerprint()
-            for el in cast(List[Cacheable], self.watch)
-        ]
+        els = [el.fingerprint() for el in cast(List[Cacheable], self.watch)]
         els.append(self.cmd)
 
         return self._hash(els)
