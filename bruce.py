@@ -6,6 +6,7 @@ from os import environ
 
 DEFAULT_VERSION = "0.0.8"
 DEFAULT_LOCATION = ".bruce"
+DEFAULT_CONFIG_FILE = "Bruce.toml"
 PYTHON_VERSION = f"python{sys.version_info.major}.{sys.version_info.minor}"
 
 
@@ -85,7 +86,7 @@ def run() -> None:
 
     from bruce.cli import main
 
-    main()
+    main(DEFAULT_CONFIG_FILE)
 
 
 if __name__ == "__main__":

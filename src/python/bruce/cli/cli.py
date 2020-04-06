@@ -2,21 +2,21 @@ import argparse
 
 from ..cache import SimpleCacheManager
 from ..exceptions import BruceError, FailedTaskException
-from ..parser.toml_ import parse
+from ..parser import parse
 from ..toposort import toposort
 
 
 def setup() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument("tasks", nargs="*", type=str, default="default")
+    parser.add_argument("tasks", nargs="*", type=str, default="")
 
     return parser.parse_args()
 
 
-def main() -> None:
+def main(configfile: str) -> None:
     args = setup()
     cache = SimpleCacheManager(path=".bruce/store.json")
-    tasks = parse("Bruce.ini")
+    tasks = parse(configfile)
 
     task_names = [t.key for t in tasks]
     for t in args.tasks:
@@ -35,7 +35,3 @@ def main() -> None:
 
         if not ran:
             print("Unmodified.")
-
-
-if __name__ == "__main__":
-    main()
