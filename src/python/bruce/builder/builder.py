@@ -51,7 +51,7 @@ class GroupInfo(Info):
 @dataclass
 class GlobInfo(Info):
     glob: str
-    exclude: Sequence[str]
+    exclude: Sequence[str] = field(default_factory=list)
     fingerprintingstrategy: str = DEFAULT_FINGERPRINTINGSTRATEGY
 
 
