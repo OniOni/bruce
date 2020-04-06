@@ -4,7 +4,7 @@ import subprocess
 import sys
 from os import environ
 
-DEFAULT_VERSION = "0.0.8"
+DEFAULT_VERSION = "0.0.9"
 DEFAULT_LOCATION = ".bruce"
 DEFAULT_CONFIG_FILE = "Bruce.toml"
 PYTHON_VERSION = f"python{sys.version_info.major}.{sys.version_info.minor}"
