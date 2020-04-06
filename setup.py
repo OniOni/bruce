@@ -10,7 +10,7 @@ setup(
     author_email="mathieu.c.sabourin@gmail.com",
     packages=find_packages("src/python"),
     package_dir={"": "src/python"},
-    extra_requires={
+    extras_require={
         'toml': [
             'toml'
         ]
