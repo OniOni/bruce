@@ -4,7 +4,7 @@ import subprocess
 import sys
 from os import environ
 
-DEFAULT_VERSION = "0.0.6"
+DEFAULT_VERSION = "0.0.8"
 DEFAULT_LOCATION = ".bruce"
 PYTHON_VERSION = f"python{sys.version_info.major}.{sys.version_info.minor}"
 
@@ -35,7 +35,7 @@ def fetch(version: str, location: str) -> str:
             [
                 f"{location}/venv/bin/pip",
                 "download",
-                f"bruce-bld=={version}",
+                f"bruce-bld[toml]=={version}",
                 "--isolated",
                 "-d",
                 ".bruce",
@@ -48,7 +48,17 @@ def install(wheel: str, location: str) -> None:
     if not pathlib.Path(
         f"{location}/venv/lib/{PYTHON_VERSION}/site-packages/bruce"
     ).exists():
-        subprocess.run([f"{location}/venv/bin/pip", "install", "--no-cache-dir", wheel])
+        subprocess.run(
+            [
+                f"{location}/venv/bin/pip",
+                "install",
+                "--no-cache-dir",
+                "--isolate",
+                "--no-index",
+                "--find-links=.bruce",
+                "bruce-bld[toml]",
+            ]
+        )
 
 
 def bootstrap() -> None:
