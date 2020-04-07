@@ -1,8 +1,8 @@
 Todo:
-- Groups (aka metatasks)
-- File groups
-- Allow per task fingerprinting strategy
 - Allow users to hook up custom fingerprinting strategies
+- Support config via pyproject.toml and env variables
+- Support anonymous watches (glob/file)
+- Allow tasks to be watched by downstream tasks
 
 Done:
 - Task should become invalidated if config changes
@@ -10,3 +10,6 @@ Done:
 - Package up
 - Write bootstrapping script
 - better error handling
+- Groups (aka metatasks)
+- File groups (globs)
+- Allow per task fingerprinting strategy
