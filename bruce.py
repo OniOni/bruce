@@ -15,7 +15,10 @@ def mk_store(path: str) -> None:
 
     if not bruce_dir.exists():
         bruce_dir.mkdir()
-        bruce_dir.joinpath("store.json").write_text("{}")
+
+    store = bruce_dir.joinpath("store.json")
+    if not store.exists():
+        store.write_text("{}")
 
 
 def mk_venv(path: str) -> str:
@@ -42,6 +45,7 @@ def fetch(version: str, location: str) -> str:
                 ".bruce",
             ]
         )
+
     return path
 
 
