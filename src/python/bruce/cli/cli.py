@@ -4,6 +4,7 @@ from ..cache import SimpleCacheManager
 from ..exceptions import BruceError, FailedTaskException
 from ..parser import parse
 from ..toposort import toposort
+from .optionnator import EnvBackend, Optionnator, PyProjBackend
 
 
 def setup() -> argparse.Namespace:
@@ -15,8 +16,9 @@ def setup() -> argparse.Namespace:
 
 def main(configfile: str) -> None:
     args = setup()
-    cache = SimpleCacheManager(path=".bruce/store.json")
-    tasks = parse(configfile)
+    optionator = Optionnator(backends=[EnvBackend(), PyProjBackend("pyproject.toml")])
+    cache = SimpleCacheManager(path=optionator.get("store", ".bruce/store.json"))
+    tasks = parse(optionator.get("configfile", "Bruce.toml"))
 
     task_names = [t.key for t in tasks]
     for t in args.tasks:
