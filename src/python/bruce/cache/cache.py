@@ -1,8 +1,8 @@
-import json
 from dataclasses import dataclass
-from typing import Any, List
+from typing import Any, Dict, List
 
 from .fingerprinting import hash_
+from .store import JsonStore
 
 
 class Cacheable:
@@ -26,24 +26,29 @@ class BaseCacheManager:
 
 @dataclass
 class SimpleCacheManager(BaseCacheManager):
-    path: str
+    store: Dict[str, str]
+
+    @classmethod
+    def get(cls, path: str, format: str = "json") -> "SimpleCacheManager":
+        if format == "json":
+            store = JsonStore(path=path)
+            # For some reason, if I don't call reload here,
+            # the default __getitem__ method gets called.
+            # TODO(mathieu): Figure this out.
+            # -- Mathieu
+            store.reload()
+
+            return cls(store=store)
+        else:
+            raise Exception
 
     def changed(self, obj: Cacheable) -> bool:
-        with open(self.path) as doc:
-            store = json.load(doc)
-
-        if obj.key in store:
-            return bool(store[obj.key] != obj.fingerprint())
+        if obj.key in self.store:
+            return bool(self.store[obj.key] != obj.fingerprint())
 
         return True
 
     def cache(self, obj: Cacheable) -> bool:
-        with open(self.path) as doc:
-            store = json.load(doc)
-
-        store[obj.key] = obj.fingerprint()
-
-        with open(self.path, mode="w") as doc:
-            json.dump(store, doc)
+        self.store[obj.key] = obj.fingerprint()
 
         return True

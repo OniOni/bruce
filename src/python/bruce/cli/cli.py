@@ -16,9 +16,12 @@ def setup() -> argparse.Namespace:
 
 def main(configfile: str) -> None:
     args = setup()
-    optionator = Optionnator(backends=[EnvBackend(), PyProjBackend("pyproject.toml")])
-    cache = SimpleCacheManager(path=optionator.get("store", ".bruce/store.json"))
-    tasks = parse(optionator.get("configfile", "Bruce.toml"))
+    opts = Optionnator(backends=[EnvBackend(), PyProjBackend("pyproject.toml")])
+    cache = SimpleCacheManager.get(
+        path=opts.get("store", ".bruce/store.json"),
+        format=opts.get("store_format", "json"),
+    )
+    tasks = parse(opts.get("configfile", "Bruce.toml"))
 
     task_names = [t.key for t in tasks]
     for t in args.tasks:
